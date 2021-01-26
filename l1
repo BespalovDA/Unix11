@@ -1,0 +1,15 @@
+#!/bin/bash -e
+hdl()
+{
+	rm -R $tempD
+	exit $?
+}
+trap hdl INT HUP EXIT QUIT TERM PIPE
+f=$1
+O=$(grep -e "Output:" $f)
+Out=${O##%Output:}
+tempd=$(mktemp -d tempXXX)
+cd tempd
+cp $f $tempd
+g++ -g -pedantic -Wall -o ../$Out $f
+
